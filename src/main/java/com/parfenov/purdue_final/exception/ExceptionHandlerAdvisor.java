@@ -1,5 +1,7 @@
 package com.parfenov.purdue_final.exception;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,10 +26,17 @@ public class ExceptionHandlerAdvisor extends ResponseEntityExceptionHandler {
     return collectResponseBody(ex);
   }
 
+
   private static Map<String, Object> collectResponseBody(Exception ex) {
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("timestamp", LocalDateTime.now().toString());
     body.put("message", ex.getMessage());
+
+    // Преобразуем стек-трейс в строку
+    StringWriter stringWriter = new StringWriter();
+    ex.printStackTrace(new PrintWriter(stringWriter));
+    body.put("stackTrace", stringWriter.toString());
+
     return body;
   }
 }

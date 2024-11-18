@@ -1,5 +1,6 @@
 package com.parfenov.purdue_final.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +24,9 @@ public class ShoppingCart implements AbstractEntity {
   @JoinColumn(name = "customer_id", nullable = false)
   private Customer customer;
 
-  @OneToMany(mappedBy = "shoppingCart")
+  @OneToMany(mappedBy = "shoppingCart",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<ShoppingCartProduct> products;
 
   public ShoppingCart() {
@@ -57,23 +60,51 @@ public class ShoppingCart implements AbstractEntity {
     this.products = products;
   }
 
-  public void addProduct(Product product) {
-    ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct();
-    products.add(shoppingCartProduct);
-    product.getShoppingCarts().add(shoppingCartProduct);
+//  public void addProduct(Product product, Integer quantity) {
+//    ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct(this, product);
+//    shoppingCartProduct.setQuantity(quantity);
+//    products.add(shoppingCartProduct);
+//    product.getShoppingCarts().add(shoppingCartProduct);
+//  }
+
+  public void addProduct(Product product, Integer quantity) {
+    // Проверяем, существует ли продукт в корзине
+    ShoppingCartProduct existingProduct = products.stream()
+        .filter(p -> p.getProduct().equals(product))
+        .findFirst()
+        .orElse(null);
+
+    if (existingProduct != null) {
+      // Если продукт уже есть, обновляем количество
+      existingProduct.setQuantity(existingProduct.getQuantity() + quantity);
+    } else {
+      // Если продукта нет, создаем новый объект
+      ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct(this, product);
+      shoppingCartProduct.setQuantity(quantity);
+      products.add(shoppingCartProduct);
+    }
   }
 
-  public void removeProduct(Product product) {
-    for (Iterator<ShoppingCartProduct> iterator = products.iterator();
-         iterator.hasNext(); ) {
+
+  public void removeProduct(Product product, Integer quantityToRemove) {
+    for (Iterator<ShoppingCartProduct> iterator = products.iterator(); iterator.hasNext(); ) {
       ShoppingCartProduct shoppingCartProduct = iterator.next();
 
       if (shoppingCartProduct.getShoppingCart().equals(this) &&
           shoppingCartProduct.getProduct().equals(product)) {
-        iterator.remove();
-        shoppingCartProduct.getProduct().getOrders().remove(shoppingCartProduct);
-        shoppingCartProduct.setProduct(null);
-        shoppingCartProduct.setShoppingCart(null);
+
+        int currentQuantity = shoppingCartProduct.getQuantity();
+        if (currentQuantity > quantityToRemove) {
+          // Уменьшаем количество, если удаляемая часть меньше текущей
+          shoppingCartProduct.setQuantity(currentQuantity - quantityToRemove);
+        } else {
+          // Полностью удаляем продукт, если количество <= удаляемому
+          iterator.remove();
+          shoppingCartProduct.getProduct().getShoppingCarts().remove(shoppingCartProduct);
+          shoppingCartProduct.setProduct(null);
+          shoppingCartProduct.setShoppingCart(null);
+        }
+        break; // Достаточно обработать один раз, так как продукты уникальны
       }
     }
   }

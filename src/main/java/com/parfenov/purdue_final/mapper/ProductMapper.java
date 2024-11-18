@@ -5,5 +5,5 @@ import com.parfenov.purdue_final.entity.Product;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface ProductMapper extends BaseMapper<Product, ProductDTO>{
+public interface ProductMapper extends BaseMapper<Product, ProductDTO> {
 }
