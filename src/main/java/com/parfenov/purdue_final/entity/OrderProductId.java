@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
-import lombok.Data;
 
 @Embeddable
 public class OrderProductId implements Serializable {
