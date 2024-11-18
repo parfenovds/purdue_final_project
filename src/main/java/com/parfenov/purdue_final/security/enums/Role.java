@@ -1,6 +1,6 @@
 package com.parfenov.purdue_final.security.enums;
 
 public enum Role {
-  CUSTOMER,
-  ADMIN
+  ROLE_CUSTOMER,
+  ROLE_ADMIN
 }

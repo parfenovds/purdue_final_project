@@ -7,6 +7,8 @@ import com.parfenov.purdue_final.security.AuthenticationRequest;
 import com.parfenov.purdue_final.security.AuthenticationResponse;
 import com.parfenov.purdue_final.security.RegisterRequest;
 import com.parfenov.purdue_final.security.enums.Role;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,10 +28,12 @@ public class AuthenticationService {
         .login(request.getLogin())
         .email(request.getEmail())
         .password(passwordEncoder.encode(request.getPassword()))
-        .role(Role.CUSTOMER)
+        .role(Role.ROLE_CUSTOMER) // Установка роли
         .build();
     customerRepository.save(customer);
-    String jwtToken = jwtService.generateToken(customer);
+    Map<String, Object> extraClaims = new HashMap<>();
+    extraClaims.put("role", customer.getRole());
+    String jwtToken = jwtService.generateToken(extraClaims, customer);
     return AuthenticationResponse.builder().token(jwtToken).build();
   }
 
@@ -46,7 +50,9 @@ public class AuthenticationService {
                 request.getEmail()
             )
         );
-    String jwtToken = jwtService.generateToken(customer);
+    Map<String, Object> extraClaims = new HashMap<>();
+    extraClaims.put("role", customer.getRole());
+    String jwtToken = jwtService.generateToken(extraClaims, customer);
     return AuthenticationResponse.builder().token(jwtToken).build();
   }
 }

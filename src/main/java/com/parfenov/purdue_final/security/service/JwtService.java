@@ -53,6 +53,10 @@ public class JwtService {
     return extractClaim(token, Claims::getExpiration);
   }
 
+  private String extractRole(String token) {
+    return extractClaim(token, claims -> claims.get("role", String.class));
+  }
+
 //  private Claims extractAllClaims(String token) {
 //    return Jwts.parser()
 //        .verifyWith(getSignInKey())
