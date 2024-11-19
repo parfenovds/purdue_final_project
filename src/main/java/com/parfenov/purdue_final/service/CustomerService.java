@@ -6,7 +6,6 @@ import com.parfenov.purdue_final.exception.NotFoundException;
 import com.parfenov.purdue_final.mapper.CustomerMapper;
 import com.parfenov.purdue_final.repository.CustomerRepository;
 import com.parfenov.purdue_final.security.enums.Role;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -2,7 +2,6 @@ package com.parfenov.purdue_final.service;
 
 import com.parfenov.purdue_final.dto.CustomerDTO;
 import com.parfenov.purdue_final.dto.PaymentDTO;
-import com.parfenov.purdue_final.entity.Customer;
 import com.parfenov.purdue_final.entity.Order;
 import com.parfenov.purdue_final.entity.Payment;
 import com.parfenov.purdue_final.enums.OrderStatus;

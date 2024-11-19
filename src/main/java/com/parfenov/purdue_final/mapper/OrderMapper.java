@@ -3,8 +3,6 @@ package com.parfenov.purdue_final.mapper;
 import com.parfenov.purdue_final.dto.OrderDTO;
 import com.parfenov.purdue_final.entity.Order;
 import com.parfenov.purdue_final.entity.OrderProduct;
-import com.parfenov.purdue_final.entity.ShoppingCart;
-import com.parfenov.purdue_final.entity.ShoppingCartProduct;
 import com.parfenov.purdue_final.service.CostCalculator;
 import java.util.List;
 import org.mapstruct.AfterMapping;

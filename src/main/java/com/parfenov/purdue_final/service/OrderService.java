@@ -2,11 +2,8 @@ package com.parfenov.purdue_final.service;
 
 import com.parfenov.purdue_final.dto.CustomerDTO;
 import com.parfenov.purdue_final.dto.OrderDTO;
-import com.parfenov.purdue_final.dto.PaymentDTO;
-import com.parfenov.purdue_final.dto.ShippingDTO;
 import com.parfenov.purdue_final.dto.ShoppingCartDTO;
 import com.parfenov.purdue_final.dto.ShoppingCartProductDTO;
-import com.parfenov.purdue_final.entity.Customer;
 import com.parfenov.purdue_final.entity.Order;
 import com.parfenov.purdue_final.entity.OrderProduct;
 import com.parfenov.purdue_final.entity.Payment;
@@ -17,15 +14,11 @@ import com.parfenov.purdue_final.enums.PaymentStatus;
 import com.parfenov.purdue_final.exception.NotFoundException;
 import com.parfenov.purdue_final.mapper.CustomerMapper;
 import com.parfenov.purdue_final.mapper.OrderMapper;
-import com.parfenov.purdue_final.mapper.PaymentMapper;
-import com.parfenov.purdue_final.mapper.ShippingMapper;
-import com.parfenov.purdue_final.repository.CustomerRepository;
 import com.parfenov.purdue_final.repository.OrderRepository;
 import com.parfenov.purdue_final.repository.ProductRepository;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

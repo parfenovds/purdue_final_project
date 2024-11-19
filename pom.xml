@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.0-M2</version>
+        <version>3.3.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>ru.activityscan</groupId>
-    <artifactId>activity-scan-backend</artifactId>
+    <groupId>com.parfenov</groupId>
+    <artifactId>purdue_final</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>activity-scan-backend</name>
-    <description>activity-scan-backend</description>
+    <name>pgu_shop</name>
+    <description>pgu-shop-backend</description>
     <url/>
     <licenses>
         <license/>
