@@ -1,6 +1,6 @@
 package com.parfenov.purdue_final.dto;
 
-import java.util.List;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,11 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ShoppingCartDTO implements BaseDTO {
-  private Long id;
-  private Long customerId;
-  private List<ShoppingCartProductDTO> products;
+public class ShippingDTO implements BaseDTO {
   private Double shippingCost;
-  private Double totalCost;
-  private Double taxAmount;
+  private LocalDate estimatedDeliveryDate;
+  private String trackingNumber;
 }

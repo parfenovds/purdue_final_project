@@ -37,10 +37,10 @@ public class Order implements AbstractEntity {
   )
   private List<OrderProduct> products = new ArrayList<>();
 
-  @OneToOne(mappedBy = "order")
+  @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
   private Shipping shipping;
 
-  @OneToOne(mappedBy = "order")
+  @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
   private Payment payment;
 
   public Order() {

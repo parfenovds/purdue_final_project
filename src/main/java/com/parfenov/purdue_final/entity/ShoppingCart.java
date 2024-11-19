@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +28,7 @@ public class ShoppingCart implements AbstractEntity {
   @OneToMany(mappedBy = "shoppingCart",
       cascade = CascadeType.ALL,
       orphanRemoval = true)
-  private List<ShoppingCartProduct> products;
+  private List<ShoppingCartProduct> products = new ArrayList<>();
 
   public ShoppingCart() {
   }
@@ -60,25 +61,14 @@ public class ShoppingCart implements AbstractEntity {
     this.products = products;
   }
 
-//  public void addProduct(Product product, Integer quantity) {
-//    ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct(this, product);
-//    shoppingCartProduct.setQuantity(quantity);
-//    products.add(shoppingCartProduct);
-//    product.getShoppingCarts().add(shoppingCartProduct);
-//  }
-
   public void addProduct(Product product, Integer quantity) {
-    // Проверяем, существует ли продукт в корзине
     ShoppingCartProduct existingProduct = products.stream()
         .filter(p -> p.getProduct().equals(product))
         .findFirst()
         .orElse(null);
-
     if (existingProduct != null) {
-      // Если продукт уже есть, обновляем количество
       existingProduct.setQuantity(existingProduct.getQuantity() + quantity);
     } else {
-      // Если продукта нет, создаем новый объект
       ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct(this, product);
       shoppingCartProduct.setQuantity(quantity);
       products.add(shoppingCartProduct);
@@ -95,16 +85,14 @@ public class ShoppingCart implements AbstractEntity {
 
         int currentQuantity = shoppingCartProduct.getQuantity();
         if (currentQuantity > quantityToRemove) {
-          // Уменьшаем количество, если удаляемая часть меньше текущей
           shoppingCartProduct.setQuantity(currentQuantity - quantityToRemove);
         } else {
-          // Полностью удаляем продукт, если количество <= удаляемому
           iterator.remove();
           shoppingCartProduct.getProduct().getShoppingCarts().remove(shoppingCartProduct);
           shoppingCartProduct.setProduct(null);
           shoppingCartProduct.setShoppingCart(null);
         }
-        break; // Достаточно обработать один раз, так как продукты уникальны
+        break;
       }
     }
   }

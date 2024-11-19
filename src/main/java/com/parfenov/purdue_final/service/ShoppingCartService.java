@@ -11,6 +11,7 @@ import com.parfenov.purdue_final.mapper.ShoppingCartMapper;
 import com.parfenov.purdue_final.repository.CustomerRepository;
 import com.parfenov.purdue_final.repository.ProductRepository;
 import com.parfenov.purdue_final.repository.ShoppingCartRepository;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,11 +25,10 @@ public class ShoppingCartService {
   private final ShoppingCartMapper shoppingCartMapper;
   private final CustomerRepository customerRepository;
 
-  @Transactional(readOnly = true)
+  @Transactional
   public ShoppingCartDTO getProductsInCart() {
     String currentUsername = getCurrentUsername();
     Customer customer = getCustomer(currentUsername);
-
     ShoppingCart shoppingCart = getShoppingCart(customer);
     return shoppingCartMapper.toDto(shoppingCart);
   }
@@ -37,26 +37,22 @@ public class ShoppingCartService {
   public ShoppingCartDTO addProductToCart(Long productId, Integer quantity) {
     String currentUsername = getCurrentUsername();
     Customer customer = getCustomer(currentUsername);
-
     ShoppingCart shoppingCart = getShoppingCart(customer);
+    if (shoppingCart.getProducts() == null) {
+      shoppingCart.setProducts(new ArrayList<>());
+    }
     Product product = getProduct(productId);
-
-    // Логика добавления продукта
     ShoppingCartProduct existingProduct = shoppingCart.getProducts().stream()
         .filter(p -> p.getProduct().getId().equals(productId))
         .findFirst()
         .orElse(null);
-
     if (existingProduct != null) {
-      // Если продукт уже есть, увеличиваем количество
       int newQuantity = existingProduct.getQuantity() + quantity;
       checkQuantity(newQuantity, product);
       existingProduct.setQuantity(newQuantity);
     } else {
-      // Добавляем новый продукт
       shoppingCart.addProduct(product, quantity);
     }
-
     ShoppingCart savedCart = shoppingCartRepository.save(shoppingCart);
     return shoppingCartMapper.toDto(savedCart);
   }
@@ -65,19 +61,20 @@ public class ShoppingCartService {
   public ShoppingCartDTO removeProductFromCart(Long productId, Integer quantityToRemove) {
     String currentUsername = getCurrentUsername();
     Customer customer = getCustomer(currentUsername);
-
     ShoppingCart shoppingCart = getShoppingCart(customer);
     Product product = getProduct(productId);
-
-    // Удаляем продукт с учетом количества
     shoppingCart.removeProduct(product, quantityToRemove);
-
     ShoppingCart savedCart = shoppingCartRepository.save(shoppingCart);
-
     return shoppingCartMapper.toDto(savedCart);
   }
 
-  // ===================== Вспомогательные методы =====================
+  @Transactional
+  public void clearShoppingCart(Long customerId) {
+    ShoppingCart shoppingCart = shoppingCartRepository.findByCustomerId(customerId)
+        .orElseThrow(() -> new NotFoundException("Shopping cart not found for customer id: " + customerId));
+    shoppingCart.getProducts().clear();
+    shoppingCartRepository.save(shoppingCart);
+  }
 
   private String getCurrentUsername() {
     return SecurityContextHolder.getContext().getAuthentication().getName();

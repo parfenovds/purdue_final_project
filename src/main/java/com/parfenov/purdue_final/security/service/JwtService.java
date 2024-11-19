@@ -57,13 +57,6 @@ public class JwtService {
     return extractClaim(token, claims -> claims.get("role", String.class));
   }
 
-//  private Claims extractAllClaims(String token) {
-//    return Jwts.parser()
-//        .verifyWith(getSignInKey())
-//        .build()
-//        .parseUnsecuredClaims(token)
-//        .getPayload();
-//  }
 private Claims extractAllClaims(String token) {
   return Jwts
       .parser()

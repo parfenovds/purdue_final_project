@@ -35,6 +35,13 @@ public class ShoppingCartProduct {
     this.id = new ShoppingCartProductId(shoppingCart.getId(), product.getId());
   }
 
+  public ShoppingCartProduct(ShoppingCart shoppingCart, Product product, Integer quantity) {
+    this.shoppingCart = shoppingCart;
+    this.product = product;
+    this.quantity = quantity;
+    this.id = new ShoppingCartProductId(shoppingCart.getId(), product.getId());
+  }
+
   public ShoppingCartProductId getId() {
     return id;
   }

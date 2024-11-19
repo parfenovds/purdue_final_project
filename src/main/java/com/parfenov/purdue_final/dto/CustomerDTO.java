@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ShoppingCartProductDTO implements BaseDTO {
-  private Long productId;
-  private String productName;
-  private Integer quantity;
-  private Double price;
-  private Double totalCost;
+public class CustomerDTO {
+  private Long id;
+  private String login;
+  private String email;
+  private String password;
 }

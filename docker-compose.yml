@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: purdue-final-postgres
+    environment:
+      POSTGRES_DB: pgu_shop
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: s3cur3P@ssw0rd2024!
+    ports:
+      - "5442:5432"
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - purdue-final-net
+
+  purdue-final-service:
+    build: .
+    container_name: purdue-final-service
+    ports:
+      - "8060:8060"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pgu_shop
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: s3cur3P@ssw0rd2024!
+      SPRING_JPA_HIBERNATE_SHOW_SQL: "true"
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_PROPERTIES_HIBERNATE_CONNECTION_DRIVER_CLASS: org.postgresql.Driver
+    depends_on:
+      - postgres
+    networks:
+      - purdue-final-net
+
+networks:
+  purdue-final-net:
+    driver: bridge

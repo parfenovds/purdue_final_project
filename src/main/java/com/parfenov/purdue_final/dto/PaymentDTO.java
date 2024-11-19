@@ -1,5 +1,6 @@
 package com.parfenov.purdue_final.dto;
 
+import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ShoppingCartProductDTO implements BaseDTO {
-  private Long productId;
-  private String productName;
-  private Integer quantity;
-  private Double price;
-  private Double totalCost;
+public class PaymentDTO implements BaseDTO {
+  private Long id;
+  private Double amount;
+  private String paymentStatus;
+  private Timestamp paymentDate;
 }

@@ -31,12 +31,9 @@ public class ExceptionHandlerAdvisor extends ResponseEntityExceptionHandler {
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("timestamp", LocalDateTime.now().toString());
     body.put("message", ex.getMessage());
-
-    // Преобразуем стек-трейс в строку
     StringWriter stringWriter = new StringWriter();
     ex.printStackTrace(new PrintWriter(stringWriter));
     body.put("stackTrace", stringWriter.toString());
-
     return body;
   }
 }

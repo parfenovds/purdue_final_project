@@ -28,7 +28,7 @@ public class AuthenticationService {
         .login(request.getLogin())
         .email(request.getEmail())
         .password(passwordEncoder.encode(request.getPassword()))
-        .role(Role.ROLE_CUSTOMER) // Установка роли
+        .role(Role.ROLE_CUSTOMER)
         .build();
     customerRepository.save(customer);
     Map<String, Object> extraClaims = new HashMap<>();

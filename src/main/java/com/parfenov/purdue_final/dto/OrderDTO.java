@@ -10,11 +10,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ShoppingCartDTO implements BaseDTO {
+public class OrderDTO implements BaseDTO {
   private Long id;
   private Long customerId;
-  private List<ShoppingCartProductDTO> products;
+  private List<OrderProductDTO> products;
+  private String status;
+  private Double totalAmount;
   private Double shippingCost;
-  private Double totalCost;
   private Double taxAmount;
+  private Double finalAmount;
+  private ShippingDTO shipping;
+  private PaymentDTO payment;
 }
